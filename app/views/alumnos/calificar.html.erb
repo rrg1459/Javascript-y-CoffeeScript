@@ -1,0 +1,27 @@
+<%= javascript_include_tag "alumnos/calificar" %>
+
+<h2> Calificaciones </h2>
+<%= form_tag do %>
+   <%= label_tag "nombre", "Nombre del alumno" %>
+   <br />
+   <%= text_field_tag "nombre", "" %>
+   <br />
+   <%= label_tag "calificacion", "Calificación" %>
+   <br />
+   <%= number_field_tag "calificacion", "", {:min => 0, :max => 10} %>
+   <br />
+   <%= submit_tag "Agregar", {:type => "button", :id => "boton_agregar"} %>
+<% end %>
+<table>
+   <thead>
+   <tr>
+      <th style="width: 200px;"> Nombre del alumno </th>
+      <th style="width: 100px;"> Calificación </th>
+      <th style="width: 50px;"></th>
+   </tr>
+   </thead>
+   <tbody id="lista">
+   </tbody>
+</table>
+
+
