@@ -1,0 +1,268 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="es-ve">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>18: Javascript y CoffeeScript</title>
+</head>
+
+<body>
+
+<div class="entry-content" style="margin: 0px 0px 15px; padding: 0px 20px; color: rgb(69, 69, 69); font-family: Oxygen, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial;">
+  <p style="margin: 0px 0px 1.5em;">
+  <header class="entry-header" style="display: block; color: rgb(69, 69, 69); font-family: Oxygen, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial">
+  <font size="5">Ruby on Rails, parte 18: Javascript y CoffeeScript</font></header></p>
+  <p style="margin: 0px 0px 1.5em;">
+  <header class="entry-header" style="display: block; color: rgb(69, 69, 69); font-family: Oxygen, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial">
+  5 Julio, 2013</header></p>
+  <p style="margin: 0px 0px 1.5em;">Hasta ahora hemos trabajado con la interfaz 
+  de nuestro sitio, sabemos que a través de las vistas es donde se encuentra la 
+  salida de código html, utilizamos helpers y hojas de estilo también, pero nos 
+  está faltando una de las partes más importantes de una página web: Javascript.</p>
+  <p style="margin: 0px 0px 1.5em;">&nbsp;</p>
+  <p style="margin: 0px 0px 1.5em;">Creo que no está de más recordar que 
+  Javascript es un lenguaje de programación del navegador, osea así como RoR es 
+  el encargado de seguir las indicaciones que el programador escribe para el 
+  funcionamiento del servidor, Javascript es el lenguaje de programación que se 
+  encarga de todo lo relacionado con el browser, ya sea Chrome, Firefox, 
+  Explorer, etc. Para pulsar un botón y qué suceda algo, para validar campos de 
+  formulario, modificar partes de la interfaz&nbsp;dinamicamente; necesitamos de 
+  Javascript.</p>
+  <p style="margin: 0px 0px 1.5em;">Sin más palabrería haremos lo siguiente: 
+  vamos a crear un proyecto nuevo o a usar alguno que ya tengamos creados para 
+  testear. Yo en mi caso voy a usar el que creé el posteo pasado llamado<span class="Apple-converted-space">&nbsp;</span><strong style="font-weight: 700;">clases_de_guitarra</strong>.</p>
+  <p style="margin: 0px 0px 1.5em;">En esta ocasión crearemos un controlador 
+  llamado<span class="Apple-converted-space">&nbsp;</span><strong style="font-weight: 700;">alumnos</strong><span class="Apple-converted-space">&nbsp;</span>y 
+  una acción llamada<span class="Apple-converted-space">&nbsp;</span><strong style="font-weight: 700;">calificar</strong>. 
+  Voy a aclarar que en este posteo no voy a trabajar con base de datos para no 
+  irme demasiado por las ramas, ya que hemos tenido tiempo para trabajar con 
+  base de datos en las últimas publicaciones.</p>
+  <p style="margin: 0px 0px 1.5em;">Entramos al proyecto:</p>
+  <pre style="overflow: auto; font-family: 'Courier 10 Pitch', Courier, monospace; font-size: 15px; line-height: 1.6; max-width: 100%; margin-bottom: 1.5em; padding: 1.5em; background: rgb(238, 238, 238)">cd proyecto</pre>
+  <p style="margin: 0px 0px 1.5em;">Creamos el controlador y la acción:</p>
+  <pre style="overflow: auto; font-family: 'Courier 10 Pitch', Courier, monospace; font-size: 15px; line-height: 1.6; max-width: 100%; margin-bottom: 1.5em; padding: 1.5em; background: rgb(238, 238, 238)">rails g controller Alumnos calificar</pre>
+  <p style="margin: 0px 0px 1.5em;">&nbsp;</p>
+  <p style="margin: 0px 0px 1.5em;"><strong style="font-weight: 700;">Javascript, 
+  un viejo conocido</strong></p>
+  <p style="margin: 0px 0px 1.5em;">Al crear un controlador no sólo se crea el 
+  controlador y las vistas, también se crean otros archivos como una hoja de 
+  estilos con extensión<span class="Apple-converted-space">&nbsp;</span><strong style="font-weight: 700;">.scss</strong><span class="Apple-converted-space">&nbsp;</span>(ya 
+  veremos más adelante de qué se trata) y un archivo&nbsp;<strong style="font-weight: 700;">.coffee</strong>, 
+  en nuestro caso&nbsp;<strong style="font-weight: 700;">alumnos.js.coffee</strong>. 
+  Por el momento ignoremos estos archivos.</p>
+  <p style="margin: 0px 0px 1.5em;">Vamos a ir a&nbsp;app -&gt; views -&gt;&nbsp;layouts -&gt;&nbsp;application.html.erb, 
+  abrimos este archivo. Ya lo hemos abierto muchas veces pero hay una línea que 
+  hasta ahora hemos ignorado:</p>
+  <pre style="overflow: auto; font-family: 'Courier 10 Pitch', Courier, monospace; font-size: 15px; line-height: 1.6; max-width: 100%; margin-bottom: 1.5em; padding: 1.5em; background: rgb(238, 238, 238)">&lt;%= javascript_include_tag &quot;application&quot; %&gt;</pre>
+  <p style="margin: 0px 0px 1.5em;">Esto es un helper que permite cargar 
+  archivos Javascript, en este caso un archivo llamado “application”, así que 
+  vamos a buscar ese archivo en app -&gt;&nbsp;assets -&gt;&nbsp;javascripts -&gt;&nbsp;application.js y 
+  lo abrimos. Es un archivo Javascript con unos comentarios, sin embargo debajo 
+  de todo abra unas líneas con este aspecto:</p>
+  <pre style="overflow: auto; font-family: 'Courier 10 Pitch', Courier, monospace; font-size: 15px; line-height: 1.6; max-width: 100%; margin-bottom: 1.5em; padding: 1.5em; background: rgb(238, 238, 238)">//= require jquery
+//= require jquery_ujs
+//= require_tree .</pre>
+  <p style="margin: 0px 0px 1.5em;">Las dos primeras cargarán dos archivos 
+  jquery, pero la última cargará todo los<span class="Apple-converted-space">&nbsp;</span><strong style="font-weight: 700;">.js</strong><span class="Apple-converted-space">&nbsp;</span>o<span class="Apple-converted-space">&nbsp;</span><strong style="font-weight: 700;">.js.coffee</strong>que 
+  se encuentran dentro de app -&gt; assets -&gt; javascript. Esto desde mi punto de 
+  vista no nos sirve ya que debería haber un Javascript por cada vista y no hay 
+  razón para que todos se carguen en todas las vistas así que borramos este 
+  último:</p>
+  <pre style="overflow: auto; font-family: 'Courier 10 Pitch', Courier, monospace; font-size: 15px; line-height: 1.6; max-width: 100%; margin-bottom: 1.5em; padding: 1.5em; background: rgb(238, 238, 238)">//= require_tree .</pre>
+  <p style="margin: 0px 0px 1.5em;">Y dejamos los dos primeros:</p>
+  <pre style="overflow: auto; font-family: 'Courier 10 Pitch', Courier, monospace; font-size: 15px; line-height: 1.6; max-width: 100%; margin-bottom: 1.5em; padding: 1.5em; background: rgb(238, 238, 238)">//= require jquery
+//= require jquery_ujs</pre>
+  <p style="margin: 0px 0px 1.5em;">Ahora bien, ambos archivos entonces se 
+  cargarán en todas las vistas, esto no está mal, nosotros necesitaremos Jquery 
+  en todas las vistas, o por lo menos en la mayoría, en caso de que necesites 
+  cargar otro archivo Javascript deberías agregar una nueva línea, por ejemplo:</p>
+  <pre style="overflow: auto; font-family: 'Courier 10 Pitch', Courier, monospace; font-size: 15px; line-height: 1.6; max-width: 100%; margin-bottom: 1.5em; padding: 1.5em; background: rgb(238, 238, 238)">//= require jquery
+//= require jquery_ujs
+//= require otro_javascript</pre>
+  <p style="margin: 0px 0px 1.5em;">O bien ir a&nbsp;<strong style="font-weight: 700;">application.html.erb</strong><span class="Apple-converted-space">&nbsp;</span>y 
+  agregarlo con el helper:</p>
+  <pre style="overflow: auto; font-family: 'Courier 10 Pitch', Courier, monospace; font-size: 15px; line-height: 1.6; max-width: 100%; margin-bottom: 1.5em; padding: 1.5em; background: rgb(238, 238, 238)">&lt;%= javascript_include_tag &quot;application&quot; %&gt;
+&lt;%= javascript_include_tag &quot;otro_javascript&quot; %&gt;</pre>
+  <p style="margin: 0px 0px 1.5em;">Dentro del archivo Javascript&nbsp;<strong style="font-weight: 700;">application.js</strong><span class="Apple-converted-space">&nbsp;</span>además 
+  de importar los Jquery y los archivos que quieras agregar también podemos 
+  crear código que estará disponible en toda la página. Vamos a probarlo 
+  escribiendo las siguientes líneas:</p>
+  <pre style="overflow: auto; font-family: 'Courier 10 Pitch', Courier, monospace; font-size: 15px; line-height: 1.6; max-width: 100%; margin-bottom: 1.5em; padding: 1.5em; background: rgb(238, 238, 238)">$(document).ready(function(){
+&nbsp; &nbsp;alert(&quot;Javascript y Jquery estan cargados.&quot;);
+});</pre>
+  <p style="margin: 0px 0px 1.5em;">Ahora reiniciamos el servidor:</p>
+  <pre style="overflow: auto; font-family: 'Courier 10 Pitch', Courier, monospace; font-size: 15px; line-height: 1.6; max-width: 100%; margin-bottom: 1.5em; padding: 1.5em; background: rgb(238, 238, 238)">rails s</pre>
+  <p style="margin: 0px 0px 1.5em;">Y entramos a&nbsp;http://localhost:3000/alumnos/calificar. 
+  Si apareció la ventana<span class="Apple-converted-space">&nbsp;</span><strong style="font-weight: 700;">alert</strong><span class="Apple-converted-space">&nbsp;</span>con 
+  el mensaje:&nbsp;“Javascript y Jquery estan cargados.” vamos bien. Ahora borramos 
+  las líneas que acabamos de crear.</p>
+  <p style="margin: 0px 0px 1.5em;">Ok, todo lo que haré a continuación es sólo 
+  una costumbre a la hora de programar, eso no significa que esté bien, mal o 
+  que estés obligado/a a hacer lo mismo, yo por cada vista tendré un javascript 
+  y además tendré uno o más javascript que se repitan en todas las páginas para 
+  funcionalidades necesarias en todas, en este caso los dos archivos jquery y<span class="Apple-converted-space">&nbsp;</span><strong style="font-weight: 700;">application.js.</strong></p>
+  <p style="margin: 0px 0px 1.5em;">Haremos lo siguiente, tendremos un 
+  formulario para ingresar el nombre de un alumno y una calificación. Así que 
+  vamos a app -&gt; views -&gt;&nbsp;alumnos -&gt;&nbsp;calificar.html.erb y escribimos lo 
+  siguiente:</p>
+  <pre style="overflow: auto; font-family: 'Courier 10 Pitch', Courier, monospace; font-size: 15px; line-height: 1.6; max-width: 100%; margin-bottom: 1.5em; padding: 1.5em; background: rgb(238, 238, 238)">&lt;h2&gt; Calificaciones &lt;/h2&gt;
+&lt;%= form_tag do %&gt;
+   &lt;%= label_tag &quot;nombre&quot;, &quot;Nombre del alumno&quot; %&gt;
+   &lt;br /&gt;
+   &lt;%= text_field_tag &quot;nombre&quot;, &quot;&quot; %&gt;
+   &lt;br /&gt;
+   &lt;%= label_tag &quot;calificacion&quot;, &quot;Calificación&quot; %&gt;
+   &lt;br /&gt;
+   &lt;%= number_field_tag &quot;calificacion&quot;, &quot;&quot;, {:min =&gt; 0, :max =&gt; 10} %&gt;
+   &lt;br /&gt;
+   &lt;%= submit_tag &quot;Agregar&quot;, {:type =&gt; &quot;button&quot;, :id =&gt; &quot;boton_agregar&quot;} %&gt;
+&lt;% end %&gt;
+&lt;table&gt;
+   &lt;thead&gt;
+   &lt;tr&gt;
+      &lt;th style=&quot;width: 200px;&quot;&gt; Nombre del alumno &lt;/th&gt;
+      &lt;th style=&quot;width: 100px;&quot;&gt; Calificación &lt;/th&gt;
+      &lt;th style=&quot;width: 50px;&quot;&gt;&lt;/th&gt;
+   &lt;/tr&gt;
+   &lt;/thead&gt;
+   &lt;tbody id=&quot;lista&quot;&gt;
+   &lt;/tbody&gt;
+&lt;/table&gt;</pre>
+  <p style="margin: 0px 0px 1.5em;">Ahora vamos a app -&gt; assets -&gt;&nbsp;javascripts, 
+  dentro de esta carpeta debería haberse creado cuando generamos el controlador 
+  y la acción un archivo llamado “alumnos.js.coffee” de ser así vamos a 
+  eliminarlo y en su lugar vamos a crear una carpeta llamada “alumnos” y dentro 
+  de esta carpeta un archivo javascript “calificar.js”, esto, insisto, es sólo 
+  una forma de trabajar mía no significa que deba ser así. Ahora dentro de ese 
+  archivo vamos a crear la lógica de la vista que acabamos de crear, al pulsar 
+  el botón deberá agregarse en la tabla un nuevo item con el nombre y la 
+  calificación del alumno, y además un link para eliminar el item. Así que 
+  dentro del archivo escribimos esto:</p>
+  <pre style="overflow: auto; font-family: 'Courier 10 Pitch', Courier, monospace; font-size: 15px; line-height: 1.6; max-width: 100%; margin-bottom: 1.5em; padding: 1.5em; background: rgb(238, 238, 238)">function calificar(){
+   this.iniciar = function(){
+      this.agregarItem();
+      this.eliminarItem();
+   };
+   this.agregarItem = function(){
+      $(&quot;#boton_agregar&quot;).click(function(){
+         var nombre = $(&quot;#nombre&quot;).val();
+         var calificacion = $(&quot;#calificacion&quot;).val();
+         var item;
+         item += '&lt;tr&gt;';
+         item += '&lt;td style=&quot;text-align: center&quot;&gt; ' + nombre + ' &lt;/td&gt;';
+         item += '&lt;td style=&quot;text-align: center&quot;&gt; ' + calificacion + ' &lt;/td&gt;';
+         item += '&lt;td style=&quot;text-align: center&quot;&gt; &lt;a class=&quot;eliminar_item&quot; href=&quot;javascript:void(0)&quot;&gt; Eliminar &lt;/a&gt; &lt;/td&gt;';
+         item += '&lt;/tr&gt;';
+         $(&quot;#lista&quot;).append(item);
+         $(&quot;#nombre&quot;).val(&quot;&quot;);
+         $(&quot;#calificacion&quot;).val(&quot;&quot;);
+      });
+   };
+   this.eliminarItem = function(){
+      $(&quot;#lista&quot;).delegate(&quot;.eliminar_item&quot;, &quot;click&quot;, function(){
+         $(this).parents(&quot;tr&quot;).remove();
+      });
+   };
+   return this.iniciar();
+};
+$(document).ready(function(){
+   calificar();
+});</pre>
+  <p style="margin: 0px 0px 1.5em;">Bien, si estás familiarizado/a con 
+  Javascript y Jquery, no debería resultarte difícil de entender. Es simplemente 
+  una función llamada<span class="Apple-converted-space">&nbsp;</span><strong style="font-weight: 700;">calificar()</strong><span class="Apple-converted-space">&nbsp;</span>que 
+  dentro tiene tres métodos,&nbsp;<strong style="font-weight: 700;">agregarItem()</strong>para 
+  agregar el nombre y calificación del alumno a la lista;&nbsp;<strong style="font-weight: 700;">eliminarItem()</strong><span class="Apple-converted-space">&nbsp;</span>para 
+  borrar un item de la lista; y por último&nbsp;<strong style="font-weight: 700;">iniciar()</strong>, 
+  esta última llamará a las otras dos y será el método que se ejecute al llamar 
+  a la función<span class="Apple-converted-space">&nbsp;</span><strong style="font-weight: 700;">calificar()</strong>.</p>
+  <p style="margin: 0px 0px 1.5em;">Luego con<span class="Apple-converted-space">&nbsp;</span><strong style="font-weight: 700;">$(document).ready</strong><span class="Apple-converted-space">&nbsp;</span>llamamos 
+  a la función para que una vez que el browser esté cargado ejecute&nbsp;<strong style="font-weight: 700;">calificar()</strong>.</p>
+  <p style="margin: 0px 0px 1.5em;">Ahora sólo falta cargar el código Javascript 
+  dentro de nuestra archivo de vista, así que volvemos a&nbsp;app -&gt; views -&gt;&nbsp;alumnos 
+  -&gt;&nbsp;calificar.html.erb y en alguna parte del código agregamos lo siguiente:</p>
+  <pre style="overflow: auto; font-family: 'Courier 10 Pitch', Courier, monospace; font-size: 15px; line-height: 1.6; max-width: 100%; margin-bottom: 1.5em; padding: 1.5em; background: rgb(238, 238, 238)">&lt;%= javascript_include_tag &quot;alumnos/calificar&quot; %&gt;</pre>
+  <p style="margin: 0px 0px 1.5em;">El helper cargará el archivo y ahora el 
+  javascript funciona.</p>
+  <p style="margin: 0px 0px 1.5em;">&nbsp;</p>
+  <p style="margin: 0px 0px 1.5em;"><strong style="font-weight: 700;">
+  CoffeeScript, ¿Javascript o… qué es esto?</strong></p>
+  <p style="margin: 0px 0px 1.5em;">Hace unos años se inventó este lenguaje 
+  llamado<span class="Apple-converted-space">&nbsp;</span><a href="http://es.wikipedia.org/wiki/CoffeeScript" target="_blank" style="background-color: transparent; text-decoration: none; color: rgb(30, 115, 190);">CoffeeScript</a>, 
+  esto no es una alternativa a Javascript como lo puede ser&nbsp;<a href="http://es.wikipedia.org/wiki/Dart" target="_blank" style="background-color: transparent; text-decoration: none; color: rgb(30, 115, 190);">Dart</a>, 
+  sino que nos permitirá escribir código más amigable que Javascript, pero luego 
+  nuestra aplicación lo convertirá en código .js y eso será lo que terminará 
+  leyendo el navegador: un Javascript.</p>
+  <p style="margin: 0px 0px 1.5em;">¡Comencemos!</p>
+  <p style="margin: 0px 0px 1.5em;">Vamos nuestro archivo app -&gt;&nbsp;assets -&gt;&nbsp;javascripts 
+  -&gt;&nbsp;alumnos -&gt;&nbsp;calificar.js y cambiamos la extensión de este archivo de modo 
+  que el nombre sea&nbsp;<strong style="font-weight: 700;">calificar.js.coffee</strong>. 
+  Si ahora recargamos la página Rails nos devolverá un error, esto es porque la 
+  sintaxis de CoffeeScript es diferente a la de Javascript.</p>
+  <p style="margin: 0px 0px 1.5em;">Acá les dejo la página con la documentación 
+  de CoffeeScript:</p>
+  <p style="margin: 0px 0px 1.5em;">
+  <a href="http://jashkenas.github.com/coffee-script/" target="_blank" style="background-color: transparent; text-decoration: none; color: rgb(30, 115, 190);">
+  http://jashkenas.github.com/coffee-script/</a></p>
+  <p style="margin: 0px 0px 1.5em;">Si le pegamos una pequeña hojeada veremos 
+  las diferencias que tiene este lenguaje con Javascript. Por ejemplo, en 
+  CoffeeScript las variables no deben definirse con la palabra<span class="Apple-converted-space">&nbsp;</span><strong style="font-weight: 700;">var</strong>. 
+  Por ejemplo, lo que en Javascript es:</p>
+  <pre style="overflow: auto; font-family: 'Courier 10 Pitch', Courier, monospace; font-size: 15px; line-height: 1.6; max-width: 100%; margin-bottom: 1.5em; padding: 1.5em; background: rgb(238, 238, 238)">var nombre = &quot;Fernando&quot;;</pre>
+  <p style="margin: 0px 0px 1.5em;">En CoffeeScript es:</p>
+  <pre style="overflow: auto; font-family: 'Courier 10 Pitch', Courier, monospace; font-size: 15px; line-height: 1.6; max-width: 100%; margin-bottom: 1.5em; padding: 1.5em; background: rgb(238, 238, 238)">nombre = &quot;Fernando&quot;</pre>
+  <p style="margin: 0px 0px 1.5em;">Tampoco podemos usar la palabra<span class="Apple-converted-space">&nbsp;</span><strong style="font-weight: 700;">function</strong>. 
+  Si quisiéramos crear una función que en Javascript es:</p>
+  <pre style="overflow: auto; font-family: 'Courier 10 Pitch', Courier, monospace; font-size: 15px; line-height: 1.6; max-width: 100%; margin-bottom: 1.5em; padding: 1.5em; background: rgb(238, 238, 238)">function sumar(num1, num2){
+   alert(num1 + num2);
+}</pre>
+  <p style="margin: 0px 0px 1.5em;">En CoffeeScript:</p>
+  <pre style="overflow: auto; font-family: 'Courier 10 Pitch', Courier, monospace; font-size: 15px; line-height: 1.6; max-width: 100%; margin-bottom: 1.5em; padding: 1.5em; background: rgb(238, 238, 238)">sumar = (num1, num2) -&gt;
+   alert num1 + num2</pre>
+  <p style="margin: 0px 0px 1.5em;">En caso de que quieras escribir un código 
+  Javascript que no sepas como es en CoffeeScript podés visitar este sitio:</p>
+  <p style="margin: 0px 0px 1.5em;">
+  <a href="http://js2coffee.org/" target="_blank" style="background-color: transparent; text-decoration: none; color: rgb(30, 115, 190);">
+  http://js2coffee.org/</a></p>
+  <p style="margin: 0px 0px 1.5em;">Que te permitirá escribir el código 
+  Javascript y te lo convertirá a CoffeeScript y viceversa.</p>
+  <p style="margin: 0px 0px 1.5em;">Pero volviendo a nuestra aplicación habrá 
+  que cambiar el código que daba error por un código CoffeeScript para que 
+  funcione, así que vamos a modificar el archivo&nbsp;<strong style="font-weight: 700;">calificar.js.coffee</strong>&nbsp;por 
+  lo siguiente:</p>
+  <pre style="overflow: auto; font-family: 'Courier 10 Pitch', Courier, monospace; font-size: 15px; line-height: 1.6; max-width: 100%; margin-bottom: 1.5em; padding: 1.5em; background: rgb(238, 238, 238)">calificar = () -&gt;
+   this.iniciar = () -&gt;
+      this.agregarItem();
+      this.eliminarItem();
+   this.agregarItem = () -&gt;
+      $(&quot;#boton_agregar&quot;).click -&gt;
+         nombre = $(&quot;#nombre&quot;).val();
+         calificacion = $(&quot;#calificacion&quot;).val();
+         item = '';
+         item += '&lt;tr&gt;';
+         item += '&lt;td style=&quot;text-align: center&quot;&gt; ' + nombre + ' &lt;/td&gt;';
+         item += '&lt;td style=&quot;text-align: center&quot;&gt; ' + calificacion + ' &lt;/td&gt;';
+         item += '&lt;td style=&quot;text-align: center&quot;&gt; &lt;a class=&quot;eliminar_item&quot; href=&quot;javascript:void(0)&quot;&gt; Eliminar &lt;/a&gt; &lt;/td&gt;';
+         item += '&lt;/tr&gt;';
+         $(&quot;#lista&quot;).append(item);
+         $(&quot;#nombre&quot;).val(&quot;&quot;);
+         $(&quot;#calificacion&quot;).val(&quot;&quot;);
+   this.eliminarItem = () -&gt;
+      $(&quot;#lista&quot;).delegate(&quot;.eliminar_item&quot;, &quot;click&quot;, -&gt;
+         $(this).parents(&quot;tr&quot;).remove();
+      );
+   return this.iniciar();
+$(document).ready -&gt;
+   calificar();</pre>
+  <p style="margin: 0px 0px 1.5em;">&nbsp;</p>
+  <p style="margin: 0px 0px 1.5em;">Usar Javascript o CoffeeScript dependerá de 
+  vos. En mi caso yo usaría Javascript para todo lo relacionado con librerías, 
+  archivos disponibles en todo el sitio y CoffeScript lo dejaría para la lógica 
+  de cada acción, osea que por cada acción tendrá un .js.coffee.</p>
+  <p style="margin: 0px 0px 1.5em;">Saludos!</div>
+
+</body>
+
+</html>
